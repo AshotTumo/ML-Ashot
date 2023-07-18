@@ -3,7 +3,7 @@ import face_recognation
 import pickle
 from datetime import datetime
 
-# Creatr an imstance for videoCapture class
+# Create an imstance for videoCapture class
 cap = cv2.VideoCapture(0)
 
 # Set the image width and height
@@ -43,3 +43,25 @@ while True:
 
 		for face_encoding in face_encodings:
 			face_data.append({"name" : name, 'face' : frame[y:y+h, x:x+w], 'face_encoding' : face_encoding, 'access' : access_list})
+
+	# Dislay the frame
+	cv2.imshow('Register Face', frame)
+	
+	if cv2.waitKey(1) & 0xFF == ord('s'):
+		capture_count += 1
+		print(f"Capture {capture_caount} complete!")
+
+	if (capture_count >= 5 ):
+		break
+
+cap.release()
+cv2.destroyAllWindows()
+
+now = datetime.now()
+file_name = f'faces/{now.strftime('%Y-%m-%d-%H-%M-%s')}-{name}.pickle'
+with open(file_name, 'wb') as f:
+	pickle.dump(face_data, f)
+
+print(f"Face data for '{name}' saved successfully!")
+
+
